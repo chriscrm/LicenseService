@@ -38,38 +38,35 @@ public class LicenseController {
 				.getLicense(organizationId, license.getLicenseId()))
 				.withSelfRel(),
 				linkTo(methodOn(LicenseController.class)
-						.createLicense(organizationId, license, null))
+						.createLicense(license, null))
 					.withRel("createLicense"),
 				linkTo(methodOn(LicenseController.class)
-						.updateLicense(organizationId, license))
+						.updateLicense(license))
 						.withRel("updateLicense"),
 				linkTo(methodOn(LicenseController.class)
-						.deleteLicense(organizationId, license.getLicenseId()))
+						.deleteLicense(license.getLicenseId()))
 				.withRel("deleteLicense"));
 		
 		return ResponseEntity.ok(license);
 	}
 	
 	@PutMapping
-	public ResponseEntity<String> updateLicense(
-			@PathVariable("organizationId") String organizationId,
+	public ResponseEntity<License> updateLicense(
 			@RequestBody License request){
-		return ResponseEntity.ok(licenseService.updateLicense(request, organizationId));
+		return ResponseEntity.ok(licenseService.updateLicense(request));
 	}
 	
 	@PostMapping
-	public ResponseEntity<String> createLicense(
-			@PathVariable("organizationId") String organizationId,
+	public ResponseEntity<License> createLicense(
 			@RequestBody License request,
 			@RequestHeader(value = "Accept-Language", required = false) Locale locale){
-		return ResponseEntity.ok(licenseService.createLicense(request, organizationId, locale));
+		return ResponseEntity.ok(licenseService.createLicense(request));
 	}
 	
 	@DeleteMapping(value = "/{licenseId}")
 	public ResponseEntity<String> deleteLicense(
-			@PathVariable("organizationId") String organizationId,
 			@PathVariable("licenseId") String licenseId){
-		return ResponseEntity.ok(licenseService.deleteLicense(licenseId, organizationId));
+		return ResponseEntity.ok(licenseService.deleteLicense(licenseId));
 	}
 
 }
